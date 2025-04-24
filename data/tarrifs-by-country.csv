@@ -1,0 +1,158 @@
+country,Average Tarriff,Year,Country Code
+India,5.9,2021,IND
+China,2.3,2021,CHN
+United States,1.5,2021,USA
+Indonesia,1.8,2021,IDN
+Pakistan,9,2021,PAK
+Nigeria,12.2,2021,NGA
+Brazil,7.8,2021,BRA
+Bangladesh,10.9,2021,BGD
+Ethiopia,12.7,2021,ETH
+Mexico,1.2,2018,MEX
+Japan,1.8,2021,JPN
+Philippines,1.7,2021,PHL
+Germany,1.4,2021,DEU
+Thailand,3.1,2021,THA
+United Kingdom,0.7,2021,GBR
+Tanzania,8.7,2021,TZA
+France,1.4,2021,FRA
+South Africa,4.5,2021,ZAF
+Italy,1.4,2021,ITA
+Kenya,9.3,2021,KEN
+Myanmar,1,2021,MMR
+Colombia,2.6,2021,COL
+Sudan,0,2021,SDN
+Uganda,8.7,2021,UGA
+Spain,1.4,2021,ESP
+Algeria,10.3,2021,DZA
+Afghanistan,5.6,2018,AFG
+Canada,2.4,2021,CAN
+Poland,1.4,2021,POL
+Morocco,4.2,2021,MAR
+Angola,11.3,2021,AGO
+Ukraine,1.7,2021,UKR
+Uzbekistan,2.6,2021,UZB
+Malaysia,3.6,2021,MYS
+Mozambique,4.2,2021,MOZ
+Ghana,10.5,2021,GHA
+Peru,0.7,2021,PER
+Saudi Arabia,4.2,2020,SAU
+Madagascar,7.5,2021,MDG
+Nepal,12,2021,NPL
+Cameroon,15.5,2019,CMR
+Niger,8.5,2021,NER
+Australia,0.8,2021,AUS
+Mali,7.9,2021,MLI
+Burkina Faso,7.3,2021,BFA
+Sri Lanka,4.4,2021,LKA
+Malawi,6,2021,MWI
+Zambia,4.8,2021,ZMB
+Kazakhstan,2.2,2021,KAZ
+Chad,16.4,2016,TCD
+Chile,0.4,2021,CHL
+Romania,1.4,2021,ROU
+Senegal,8.9,2021,SEN
+Guatemala,1.7,2021,GTM
+Netherlands,1.4,2021,NLD
+Ecuador,4.6,2021,ECU
+Cambodia,5.4,2021,KHM
+Zimbabwe,11.4,2021,ZWE
+Guinea,12.3,2021,GIN
+Benin,10.9,2021,BEN
+Rwanda,12,2021,RWA
+Burundi,8.5,2021,BDI
+Bolivia,5.1,2021,BOL
+Tunisia,9.3,2016,TUN
+Haiti,6.8,2020,HTI
+Belgium,1.4,2021,BEL
+Jordan,4,2020,JOR
+Dominican Republic,3.8,2021,DOM
+United Arab Emirates,2.6,2021,ARE
+Honduras,2.9,2021,HND
+Sweden,1.4,2021,SWE
+Tajikistan,2.3,2021,TJK
+Papua New Guinea,3.6,2021,PNG
+Portugal,1.4,2021,PRT
+Azerbaijan,6,2021,AZE
+Greece,1.4,2021,GRC
+Hungary,1.4,2021,HUN
+Togo,10.7,2021,TGO
+Israel,2.9,2021,ISR
+Austria,1.4,2021,AUT
+Belarus,2.3,2021,BLR
+Switzerland,1.4,2021,CHE
+Sierra Leone,14.2,2021,SLE
+Libya,4,2021,LBY
+Paraguay,4.5,2021,PRY
+Nicaragua,2,2021,NIC
+Bulgaria,1.4,2021,BGR
+Serbia,1.7,2021,SRB
+El Salvador,1.9,2021,SLV
+Denmark,1.4,2021,DNK
+Singapore,0,2021,SGP
+Lebanon,2.8,2020,LBN
+Finland,1.4,2021,FIN
+Liberia,6.6,2021,LBR
+Norway,3,2021,NOR
+Central African Republic,16.4,2017,CAF
+Oman,2,2021,OMN
+Ireland,1.4,2021,IRL
+New Zealand,0.9,2021,NZL
+Mauritania,8.3,2021,MRT
+Costa Rica,1.4,2021,CRI
+Kuwait,2.9,2021,KWT
+Panama,6.4,2021,PAN
+Croatia,1.4,2021,HRV
+Georgia,0.3,2021,GEO
+Mongolia,5.3,2021,MNG
+Uruguay,5.3,2021,URY
+Bosnia and Herzegovina,2.8,2021,BIH
+Qatar,3.5,2021,QAT
+Moldova,1.2,2021,MDA
+Namibia,1.3,2021,NAM
+Armenia,3.6,2021,ARM
+Lithuania,1.4,2021,LTU
+Jamaica,8.6,2021,JAM
+Albania,1.1,2021,ALB
+Gabon,14.5,2019,GAB
+Botswana,0.9,2021,BWA
+Lesotho,3.4,2021,LSO
+Guinea-Bissau,11.8,2021,GNB
+Slovenia,1.4,2021,SVN
+Equatorial Guinea,15.6,2007,GNQ
+Latvia,1.4,2021,LVA
+North Macedonia,2.4,2021,MKD
+Bahrain,2.1,2021,BHR
+Trinidad and Tobago,8.9,2021,TTO
+Timor-Leste,2.5,2021,TLS
+Estonia,1.4,2021,EST
+Cyprus,1.4,2021,CYP
+Mauritius,1.3,2021,MUS
+Eswatini,2.1,2021,SWZ
+Djibouti,17.6,2014,DJI
+Fiji,8.3,2021,FJI
+Comoros,4.3,2021,COM
+Guyana,4.7,2021,GUY
+Solomon Islands,14.3,2021,SLB
+Bhutan,3.3,2021,BTN
+Luxembourg,1.4,2021,LUX
+Montenegro,3.2,2021,MNE
+Suriname,8.4,2021,SUR
+Malta,1.4,2021,MLT
+Maldives,10.6,2021,MDV
+Belize,17.8,2021,BLZ
+Iceland,1.5,2021,ISL
+Vanuatu,11.1,2021,VUT
+Barbados,12.2,2021,BRB
+Sao Tome and Principe,10,2019,STP
+Samoa,10.4,2020,WSM
+Seychelles,1.1,2021,SYC
+Grenada,10.8,2019,GRD
+Aruba,9.7,2021,ABW
+Tonga,6.6,2021,TON
+Antigua and Barbuda,13.1,2021,ATG
+Cayman Islands,20.4,2021,CYM
+Dominica,7.8,2020,DMA
+Palau,9.5,2021,PLW
+Nauru,14.1,2021,NRU
+Tuvalu,2.4,2017,TUV

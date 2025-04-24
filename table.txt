@@ -1,0 +1,18 @@
+		(1)	(2)	(3)	(4)	(5)	(6)
+VARIABLES	LABELS	CPI	CPI	CPI	CPI	CPI	CPI
+							
+CPIAmacroeconomicmanagementra	CPIA MacroEcon Management Rating	-22.83**	-20.54**	7.123	6.949	6.949	6.949
+		(11.51)	(9.496)	(11.84)	(11.92)	(11.92)	(11.92)
+CPIAeconomicmanagementcluster	CPIA Econ Management Cluster Avg		-2.610	-25.46*	-25.00*	-25.00*	-25.00*
+			(4.985)	(14.64)	(14.64)	(14.64)	(14.64)
+Informalpaymentstopublicoffi	Informal Payments to Govt Officials			-0.287**	-0.306**	-0.306**	-0.306**
+				(0.138)	(0.150)	(0.150)	(0.150)
+GDPpercapitaconstant2015US	GDP Per Capita (Constant 2015 USD)				-0.00111	-0.00111	-0.00111
+					(0.00137)	(0.00137)	(0.00137)
+Constant	Constant	191.1***	191.8***	180.9***	182.5***	182.5***	182.5***
+		(44.16)	(45.04)	(27.71)	(28.52)	(28.52)	(28.52)
+							
+Observations		860	860	135	135	135	135
+Adjusted R-squared		0.058	0.057	0.120	0.116	0.116	0.116
+Robust standard errors in parentheses							
+*** p<0.01, ** p<0.05, * p<0.1							
