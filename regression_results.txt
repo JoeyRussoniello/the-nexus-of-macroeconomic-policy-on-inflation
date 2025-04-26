@@ -1,0 +1,12 @@
+	(1)
+VARIABLES	cpi
+	
+cpia_macro_rating	-22.83**
+	(11.51)
+Constant	191.1***
+	(44.16)
+	
+Observations	860
+Adjusted R-squared	0.058
+Robust standard errors in parentheses	
+*** p<0.01, ** p<0.05, * p<0.1	

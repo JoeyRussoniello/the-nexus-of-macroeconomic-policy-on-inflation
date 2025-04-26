@@ -1,0 +1,38 @@
+/* 
+CLEAN COLUMN NAME and DROP irrelevant columns
+*/
+use "C:\Users\mruss\projects\classes\ec204\final_project\data\InflationData Countries Only.dta"
+rename GDPpercapitagrowthannual gdp_pc_growth
+rename GDPdeflatorbaseyearvariesb gdp_deflator
+rename Domesticcreditprovidedbyfina dmstc_crdt_financial
+rename Domesticcredittoprivatesecto dmstc_crdt_privt
+rename Depthofcreditinformationinde depth_of_credit
+rename Exportvolumeindex2000100 export_volume
+rename GDPpercapitaconstant2015US gdp_constant
+rename Accesstoelectricityofpopu electricity_access
+rename CPIAmacroeconomicmanagementra cpi_macro_rating
+rename cpi_macro_rating cpia_macro_rating
+rename CPIAeconomicmanagementcluster cpi_econ_rating
+rename CPIAfinancialsectorrating1 cpia_financial_rating
+rename Informalpaymentstopublicoffi informal_payments
+rename CountryName country_name
+rename Time year
+rename CountryCode country_code
+rename Inflationconsumerpricesannu cp_inflation_perc
+drop Adolescentfertilityratebirth Agedependencyratioofworki Agriculturevalueaddedannual Agriculturevalueaddedconsta AgriculturevalueaddedofG
+drop Airtransportregisteredcarrie AutomatedtellermachinesATMs Contributingfamilyworkersfem  Contributingfamilyworkersmal  Contributingfamilyworkerstot
+drop GDPconstant2015USNYGDP  GDPgrowthannual GDPgrowthannualNYGDPMK  GDPpercapitaPPPconstant20 GDPPPPconstant2021internat
+rename Consumerpriceindex2010100 cpi
+rename Borrowersfromcommercialbanks borrowers
+rename CPIAgenderequalityrating1l cpia_gender_eq_rating
+rename CPIApoliciesforsocialinclusi cpia_social_inclus_rating
+rename CPIApropertyrightsandruleba cpia_prpty_rights_rating
+rename CPIAsocialprotectionrating1 cpia_social_protctn_rating
+rename cpi_econ_rating cpia_econ_rating
+drop ElectricpowerconsumptionkWh
+
+//Generate an average rating column 
+egen cpia_avg_rating = rowmean( cpia_econ_rating cpia_financial_rating cpia_gender_eq_rating cpia_macro_rating cpia_social_inclus_rating cpia_prpty_rights_rating cpia_social_protctn_rating)
+
+//Drop rows without our main dependent variable
+drop if missing(cpia_avg_rating)
