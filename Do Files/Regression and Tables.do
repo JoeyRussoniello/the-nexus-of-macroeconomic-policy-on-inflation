@@ -1,7 +1,14 @@
 /* Regression and table generation do file */
 clear
-cd "C:\Users\mruss\projects\classes\ec204\final_project" //Absolute File Path Sorry
+cd "C:\Users\mruss\projects\classes\ec204\final_project" //Absolute File Path to my project
 use data\renamed_rows_final.dta
+
+//Relabel variables for better outreg2 output
+label variable cpia_macro_rating "Macro"
+label variable inflation "Inflation"
+label variable cpia_avg "CPIA_Avg"
+label variable export_volume "Export"
+label variable dmstc_crdt_financial "Credit Financial"
 
 //Generate Helper Columns for Different Models
 gen macro_rating_sq = cpia_macro_rating * cpia_macro_rating
@@ -16,15 +23,15 @@ xtset country year
 
 //Basic Linear
 xtreg inflation cpia_macro_rating,r fe
-outreg2 using no_ovb.doc, replace adjr2
+outreg2 using "Regression Outputs\no_ovb.doc", replace adjr2
 
 //Basic Quadratic
 xtreg inflation cpia_macro_rating macro_rating_sq, r fe
-outreg2 using no_ovb.doc, adjr2
+outreg2 using "Regression Outputs\no_ovb.doc", adjr2
 
 //Basic Logrithmic
 xtreg inflation log_macro_rating, r fe
-outreg2 using no_ovb.doc, adjr2
+outreg2 using "Regression Outputs\no_ovb.doc", adjr2
 
 //-----------Controlling for OVB 
 //Testing (Note extra variables added as I discovered OVBs)
@@ -40,18 +47,18 @@ xtreg inflation cpia_macro_rating  dmstc_crdt_financial export_volume  depth_of_
 xtreg inflation cpia_macro_rating  dmstc_crdt_financial export_volume  depth_of_credit informal_payments , r fe
 
 
-//Final Table
+//Controlling for OVB in outreg2
 xtreg inflation cpia_macro_rating, r fe
-outreg2 using regression_results.doc, replace adjr2
+outreg2 using "Regression Outputs\regression_results.doc", replace adjr2
 
 xtreg inflation cpia_macro_rating cpia_avg_rating, r fe
-outreg2 using regression_results.doc, adjr2
+outreg2 using "Regression Outputs\regression_results.doc", adjr2
 
 xtreg inflation cpia_macro_rating cpia_avg_rating dmstc_crdt_financial, r fe
-outreg2 using regression_results.doc, adjr2
+outreg2 using "Regression Outputs\regression_results.doc", adjr2
 
 xtreg inflation cpia_macro_rating cpia_avg_rating dmstc_crdt_financial export_volume, r fe
-outreg2 using regression_results.doc, adjr2
+outreg2 using "Regression Outputs\regression_results.doc", adjr2
 //---------Joint F-Test
 
 //---------Interaction Term Testing----------------------
@@ -60,14 +67,14 @@ xtreg inflation c.cpia_macro_rating##c.dmstc_crdt_financial c.cpia_avg_rating ex
 
 //FINAL RESULTS: EXTREMELY INTERESTING
 
-//Purely Linear Model for Comparison (Baseline)
-xtreg inflation cpia_macro_rating export_volume cpia_avg_rating c.dmstc_crdt_financial, r fe
-outreg2 using final_results.doc, replace adjr2
+//Linear Model for Comparison (Adj R^2)
+xtreg inflation cpia_macro_rating export_volume cpia_avg_rating dmstc_crdt_financial, r fe
+outreg2 using "Regression Outputs\final_results.doc", replace adjr2
 
 //ONLY WHEN holding other variables constant
 xtreg inflation c.cpia_macro_rating##c.export_volume, r fe
-outreg2 using final_results.doc, adjr2
+outreg2 using "Regression Outputs\final_results.doc", adjr2
 
-//Interaction Term DOES MATTER WHEN CONTROLLING FOR OVB
-xtreg inflation c.cpia_macro_rating##c.export_volume cpia_avg_rating c.dmstc_crdt_financial, r fe
-outreg2 using final_results.doc, adjr2
+//Interaction Term
+xtreg inflation c.cpia_macro_rating##c.export_volume cpia_avg_rating dmstc_crdt_financial, r fe
+outreg2 using "Regression Outputs\final_results.doc", adjr2
