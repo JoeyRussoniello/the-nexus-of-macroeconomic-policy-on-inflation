@@ -6,7 +6,6 @@ use data\renamed_rows_final.dta
 //Generate Helper Columns for Different Models
 gen macro_rating_sq = cpia_macro_rating * cpia_macro_rating
 gen log_macro_rating = log(cpia_macro_rating)
-gen log_inf_perc = log(cp_inflation_perc)
 
 
 //Start Regressions
@@ -61,9 +60,14 @@ xtreg inflation c.cpia_macro_rating##c.dmstc_crdt_financial c.cpia_avg_rating ex
 
 //FINAL RESULTS: EXTREMELY INTERESTING
 
-//Interaction Term DOES matter
-xtreg inflation c.cpia_macro_rating##c.export_volume cpia_avg_rating c.dmstc_crdt_financial, r fe
+//Purely Linear Model for Comparison (Baseline)
+xtreg inflation cpia_macro_rating export_volume cpia_avg_rating c.dmstc_crdt_financial, r fe
 outreg2 using final_results.doc, replace adjr2
+
 //ONLY WHEN holding other variables constant
 xtreg inflation c.cpia_macro_rating##c.export_volume, r fe
+outreg2 using final_results.doc, adjr2
+
+//Interaction Term DOES MATTER WHEN CONTROLLING FOR OVB
+xtreg inflation c.cpia_macro_rating##c.export_volume cpia_avg_rating c.dmstc_crdt_financial, r fe
 outreg2 using final_results.doc, adjr2

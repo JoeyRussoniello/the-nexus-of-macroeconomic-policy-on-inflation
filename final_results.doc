@@ -1,28 +1,28 @@
 {\rtf1\fs24
-\trowd\trgaph75\trleft-75\intbl\trqc\clbrdrt\brdrs\cellx5184\clbrdrt\brdrs\cellx6768\clbrdrt\brdrs\cellx8208
-\ql \cell\qc (1)\cell\qc (2)\cell\row
-\trowd\trgaph75\trleft-75\trqc\cellx5184\cellx6768\cellx8208
-\trowd\trgaph75\trleft-75\trqc\clbrdrb\brdrs\cellx5184\clbrdrb\brdrs\cellx6768\clbrdrb\brdrs\cellx8208
-\ql VARIABLES\cell\qc inflation\cell\qc inflation\cell\row
-\trowd\trgaph75\trleft-75\trqc\cellx5184\cellx6768\cellx8208
-\ql \cell\qc \cell\qc \cell\row
-\ql cpia_macro_rating\cell\qc -4.644***\cell\qc -608.9\cell\row
-\ql \cell\qc (1.104)\cell\qc (564.5)\cell\row
-\ql export_volume\cell\qc -0.0317*\cell\qc -6.812\cell\row
-\ql \cell\qc (0.0163)\cell\qc (6.438)\cell\row
-\ql c.cpia_macro_rating#c.export_volume\cell\qc 0.00792*\cell\qc 1.703\cell\row
-\ql \cell\qc (0.00407)\cell\qc (1.610)\cell\row
-\ql cpia_avg_rating\cell\qc 3.284*\cell\qc \cell\row
-\ql \cell\qc (1.776)\cell\qc \cell\row
-\ql dmstc_crdt_financial\cell\qc -0.0741***\cell\qc \cell\row
-\ql \cell\qc (0.0215)\cell\qc \cell\row
-\ql Constant\cell\qc 16.67**\cell\qc 2,376\cell\row
-\ql \cell\qc (6.451)\cell\qc (2,169)\cell\row
-\ql \cell\qc \cell\qc \cell\row
-\ql Observations\cell\qc 794\cell\qc 825\cell\row
-\ql Number of country\cell\qc 75\cell\qc 75\cell\row
-\trowd\trgaph75\trleft-75\trqc\trbrdrb\brdrs\clbrdrb\brdrs\cellx5184\clbrdrb\brdrs\cellx6768\clbrdrb\brdrs\cellx8208
-\ql Adjusted R-squared\cell\qc 0.044\cell\qc 0.022\cell\row
+\trowd\trgaph75\trleft-75\intbl\trqc\clbrdrt\brdrs\cellx5184\clbrdrt\brdrs\cellx6768\clbrdrt\brdrs\cellx8208\clbrdrt\brdrs\cellx9792
+\ql \cell\qc (1)\cell\qc (2)\cell\qc (3)\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx5184\cellx6768\cellx8208\cellx9792
+\trowd\trgaph75\trleft-75\trqc\clbrdrb\brdrs\cellx5184\clbrdrb\brdrs\cellx6768\clbrdrb\brdrs\cellx8208\clbrdrb\brdrs\cellx9792
+\ql VARIABLES\cell\qc inflation\cell\qc inflation\cell\qc inflation\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx5184\cellx6768\cellx8208\cellx9792
+\ql \cell\qc \cell\qc \cell\qc \cell\row
+\ql cpia_macro_rating\cell\qc -3.222***\cell\qc -608.9\cell\qc -4.644***\cell\row
+\ql \cell\qc (0.691)\cell\qc (564.5)\cell\qc (1.104)\cell\row
+\ql export_volume\cell\qc 4.56e-06\cell\qc -6.812\cell\qc -0.0317*\cell\row
+\ql \cell\qc (0.000260)\cell\qc (6.438)\cell\qc (0.0163)\cell\row
+\ql cpia_avg_rating\cell\qc 3.483**\cell\qc \cell\qc 3.284*\cell\row
+\ql \cell\qc (1.737)\cell\qc \cell\qc (1.776)\cell\row
+\ql dmstc_crdt_financial\cell\qc -0.0773***\cell\qc \cell\qc -0.0741***\cell\row
+\ql \cell\qc (0.0219)\cell\qc \cell\qc (0.0215)\cell\row
+\ql c.cpia_macro_rating#c.export_volume\cell\qc \cell\qc 1.703\cell\qc 0.00792*\cell\row
+\ql \cell\qc \cell\qc (1.610)\cell\qc (0.00407)\cell\row
+\ql Constant\cell\qc 10.51**\cell\qc 2,376\cell\qc 16.67**\cell\row
+\ql \cell\qc (5.149)\cell\qc (2,169)\cell\qc (6.451)\cell\row
+\ql \cell\qc \cell\qc \cell\qc \cell\row
+\ql Observations\cell\qc 794\cell\qc 825\cell\qc 794\cell\row
+\ql Number of country\cell\qc 75\cell\qc 75\cell\qc 75\cell\row
+\trowd\trgaph75\trleft-75\trqc\trbrdrb\brdrs\clbrdrb\brdrs\cellx5184\clbrdrb\brdrs\cellx6768\clbrdrb\brdrs\cellx8208\clbrdrb\brdrs\cellx9792
+\ql Adjusted R-squared\cell\qc 0.039\cell\qc 0.022\cell\qc 0.044\cell\row
 \pard\qc
 Robust standard errors in parentheses\par
 *** p<0.01, ** p<0.05, * p<0.1\par
