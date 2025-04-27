@@ -1,0 +1,21 @@
+	(1)	(2)
+VARIABLES	inflation	inflation
+		
+cpia_macro_rating	-5.179***	-608.9
+	(1.218)	(564.5)
+export_volume	-0.0317*	-6.812
+	(0.0163)	(6.438)
+c.cpia_macro_rating#c.export_volume	0.00794*	1.703
+	(0.00407)	(1.610)
+cpia_avg_rating	4.167*	
+	(2.219)	
+dmstc_crdt_financial	-0.0733***	
+	(0.0217)	
+Constant	15.36**	2,376
+	(6.829)	(2,169)
+		
+Observations	794	825
+Number of country	75	75
+Adjusted R-squared	0.044	0.022
+Robust standard errors in parentheses		
+*** p<0.01, ** p<0.05, * p<0.1		

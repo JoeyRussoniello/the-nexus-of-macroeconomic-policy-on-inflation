@@ -1,0 +1,17 @@
+	(1)	(2)	(3)
+VARIABLES	inflation	inflation	inflation
+			
+cpia_macro_rating	-269.0	-3,683	
+	(255.7)	(2,464)	
+macro_rating_sq		496.2	
+		(333.2)	
+log_macro_rating			-1,588
+			(1,321)
+Constant	1,030	6,670	2,083
+	(943.6)	(4,425)	(1,702)
+			
+Observations	856	856	856
+Number of country	79	79	79
+Adjusted R-squared	0.012	0.094	0.047
+Robust standard errors in parentheses			
+*** p<0.01, ** p<0.05, * p<0.1			
