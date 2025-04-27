@@ -6,18 +6,18 @@
 \ql VARIABLES\cell\qc inflation\cell\qc inflation\cell\row
 \trowd\trgaph75\trleft-75\trqc\cellx5184\cellx6768\cellx8208
 \ql \cell\qc \cell\qc \cell\row
-\ql cpia_macro_rating\cell\qc -5.179***\cell\qc -608.9\cell\row
-\ql \cell\qc (1.218)\cell\qc (564.5)\cell\row
+\ql cpia_macro_rating\cell\qc -4.644***\cell\qc -608.9\cell\row
+\ql \cell\qc (1.104)\cell\qc (564.5)\cell\row
 \ql export_volume\cell\qc -0.0317*\cell\qc -6.812\cell\row
 \ql \cell\qc (0.0163)\cell\qc (6.438)\cell\row
-\ql c.cpia_macro_rating#c.export_volume\cell\qc 0.00794*\cell\qc 1.703\cell\row
+\ql c.cpia_macro_rating#c.export_volume\cell\qc 0.00792*\cell\qc 1.703\cell\row
 \ql \cell\qc (0.00407)\cell\qc (1.610)\cell\row
-\ql cpia_avg_rating\cell\qc 4.167*\cell\qc \cell\row
-\ql \cell\qc (2.219)\cell\qc \cell\row
-\ql dmstc_crdt_financial\cell\qc -0.0733***\cell\qc \cell\row
-\ql \cell\qc (0.0217)\cell\qc \cell\row
-\ql Constant\cell\qc 15.36**\cell\qc 2,376\cell\row
-\ql \cell\qc (6.829)\cell\qc (2,169)\cell\row
+\ql cpia_avg_rating\cell\qc 3.284*\cell\qc \cell\row
+\ql \cell\qc (1.776)\cell\qc \cell\row
+\ql dmstc_crdt_financial\cell\qc -0.0741***\cell\qc \cell\row
+\ql \cell\qc (0.0215)\cell\qc \cell\row
+\ql Constant\cell\qc 16.67**\cell\qc 2,376\cell\row
+\ql \cell\qc (6.451)\cell\qc (2,169)\cell\row
 \ql \cell\qc \cell\qc \cell\row
 \ql Observations\cell\qc 794\cell\qc 825\cell\row
 \ql Number of country\cell\qc 75\cell\qc 75\cell\row
