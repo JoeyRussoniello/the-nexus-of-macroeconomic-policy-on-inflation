@@ -23,7 +23,7 @@ rename Informalpaymentstopublicoffi informal_payments
 rename CountryName country_name
 rename Time year
 rename CountryCode country_code
-rename Inflationconsumerpricesannu cp_inflation_perc
+rename Inflationconsumerpricesannu inflation
 rename Consumerpriceindex2010100 cpi
 rename Borrowersfromcommercialbanks borrowers
 rename CPIAgenderequalityrating1l cpia_gender_eq_rating

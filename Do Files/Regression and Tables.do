@@ -8,8 +8,6 @@ gen macro_rating_sq = cpia_macro_rating * cpia_macro_rating
 gen log_macro_rating = log(cpia_macro_rating)
 gen log_inf_perc = log(cp_inflation_perc)
 
-//Rename main variable for better display
-rename cp_inflation_perc inflation
 
 //Start Regressions
 encode country_code, gen(country)
