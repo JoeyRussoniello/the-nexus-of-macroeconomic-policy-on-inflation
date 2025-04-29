@@ -12,8 +12,11 @@ label variable dmstc_crdt_financial "Credit Financial"
 
 //Generate Helper Columns for Different Models
 gen macro_rating_sq = cpia_macro_rating * cpia_macro_rating
+label variable macro_rating_sq "Macro^2"
 gen log_macro_rating = log(cpia_macro_rating)
-
+label variable log_macro_rating "Log(Macro)"
+gen macro_export = cpia_macro_rating * export_volume
+label variable macro_export "Macro x Export"
 
 //Start Regressions
 encode country_code, gen(country)
@@ -69,12 +72,21 @@ xtreg inflation c.cpia_macro_rating##c.dmstc_crdt_financial c.cpia_avg_rating ex
 
 //Linear Model for Comparison (Adj R^2)
 xtreg inflation cpia_macro_rating export_volume cpia_avg_rating dmstc_crdt_financial, r fe
-outreg2 using "Regression Outputs\final_results.doc", replace adjr2
+outreg2 using "Regression Outputs\final_results.doc", replace adjr2 label
+
+//Squared Model
+xtreg inflation macro_rating_sq export_volume cpia_avg_rating dmstc_crdt_financial, r fe
+outreg2 using "Regression Outputs\final_results.doc", adjr2 label
+
+//Log Model 
+xtreg inflation log_macro_rating export_volume cpia_avg_rating dmstc_crdt_financial, r fe
+outreg2 using "Regression Outputs\final_results.doc", adjr2 label
 
 //ONLY WHEN holding other variables constant
-xtreg inflation c.cpia_macro_rating##c.export_volume, r fe
-outreg2 using "Regression Outputs\final_results.doc", adjr2
+xtreg inflation cpia_macro_rating export_volume macro_export, r fe
+outreg2 using "Regression Outputs\final_results.doc", adjr2 label
 
 //Interaction Term
-xtreg inflation c.cpia_macro_rating##c.export_volume cpia_avg_rating dmstc_crdt_financial, r fe
-outreg2 using "Regression Outputs\final_results.doc", adjr2
+xtreg inflation cpia_macro_rating export_volume macro_export cpia_avg_rating dmstc_crdt_financial, r fe
+outreg2 using "Regression Outputs\final_results.doc", adjr2 label
+

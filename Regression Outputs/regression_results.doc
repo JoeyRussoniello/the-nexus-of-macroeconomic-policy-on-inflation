@@ -1,25 +1,25 @@
 {\rtf1\fs24
-\trowd\trgaph75\trleft-75\intbl\trqc\clbrdrt\brdrs\cellx2736\clbrdrt\brdrs\cellx4176\clbrdrt\brdrs\cellx5616\clbrdrt\brdrs\cellx7056\clbrdrt\brdrs\cellx8640
+\trowd\trgaph75\trleft-75\intbl\trqc\clbrdrt\brdrs\cellx3024\clbrdrt\brdrs\cellx4464\clbrdrt\brdrs\cellx5904\clbrdrt\brdrs\cellx7344\clbrdrt\brdrs\cellx8928
 \ql \cell\qc (1)\cell\qc (2)\cell\qc (3)\cell\qc (4)\cell\row
-\trowd\trgaph75\trleft-75\trqc\cellx2736\cellx4176\cellx5616\cellx7056\cellx8640
-\trowd\trgaph75\trleft-75\trqc\clbrdrb\brdrs\cellx2736\clbrdrb\brdrs\cellx4176\clbrdrb\brdrs\cellx5616\clbrdrb\brdrs\cellx7056\clbrdrb\brdrs\cellx8640
-\ql VARIABLES\cell\qc Inflation\cell\qc Inflation\cell\qc Inflation\cell\qc Inflation\cell\row
-\trowd\trgaph75\trleft-75\trqc\cellx2736\cellx4176\cellx5616\cellx7056\cellx8640
+\trowd\trgaph75\trleft-75\trqc\cellx3024\cellx4464\cellx5904\cellx7344\cellx8928
+\trowd\trgaph75\trleft-75\trqc\clbrdrb\brdrs\cellx3024\clbrdrb\brdrs\cellx4464\clbrdrb\brdrs\cellx5904\clbrdrb\brdrs\cellx7344\clbrdrb\brdrs\cellx8928
+\ql VARIABLES\cell\qc inflation\cell\qc inflation\cell\qc inflation\cell\qc inflation\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx3024\cellx4464\cellx5904\cellx7344\cellx8928
 \ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\row
-\ql Macro\cell\qc -269.0\cell\qc -109.8\cell\qc -5.862**\cell\qc -3.222***\cell\row
+\ql cpia_macro_rating\cell\qc -269.0\cell\qc -109.8\cell\qc -5.862**\cell\qc -3.222***\cell\row
 \ql \cell\qc (255.7)\cell\qc (108.7)\cell\qc (2.405)\cell\qc (0.691)\cell\row
-\ql CPIA_Avg\cell\qc \cell\qc -762.8\cell\qc -2.072\cell\qc 3.483**\cell\row
+\ql cpia_avg_rating\cell\qc \cell\qc -762.8\cell\qc -2.072\cell\qc 3.483**\cell\row
 \ql \cell\qc \cell\qc (677.3)\cell\qc (6.294)\cell\qc (1.737)\cell\row
-\ql Credit Financial\cell\qc \cell\qc \cell\qc -0.120**\cell\qc -0.0773***\cell\row
+\ql dmstc_crdt_financial\cell\qc \cell\qc \cell\qc -0.120**\cell\qc -0.0773***\cell\row
 \ql \cell\qc \cell\qc \cell\qc (0.0473)\cell\qc (0.0219)\cell\row
-\ql Export\cell\qc \cell\qc \cell\qc \cell\qc 4.56e-06\cell\row
+\ql export_volume\cell\qc \cell\qc \cell\qc \cell\qc 4.56e-06\cell\row
 \ql \cell\qc \cell\qc \cell\qc \cell\qc (0.000260)\cell\row
 \ql Constant\cell\qc 1,030\cell\qc 2,873\cell\qc 40.01\cell\qc 10.51**\cell\row
 \ql \cell\qc (943.6)\cell\qc (2,530)\cell\qc (29.17)\cell\qc (5.149)\cell\row
 \ql \cell\qc \cell\qc \cell\qc \cell\qc \cell\row
 \ql Observations\cell\qc 856\cell\qc 856\cell\qc 825\cell\qc 794\cell\row
 \ql Number of country\cell\qc 79\cell\qc 79\cell\qc 79\cell\qc 75\cell\row
-\trowd\trgaph75\trleft-75\trqc\trbrdrb\brdrs\clbrdrb\brdrs\cellx2736\clbrdrb\brdrs\cellx4176\clbrdrb\brdrs\cellx5616\clbrdrb\brdrs\cellx7056\clbrdrb\brdrs\cellx8640
+\trowd\trgaph75\trleft-75\trqc\trbrdrb\brdrs\clbrdrb\brdrs\cellx3024\clbrdrb\brdrs\cellx4464\clbrdrb\brdrs\cellx5904\clbrdrb\brdrs\cellx7344\clbrdrb\brdrs\cellx8928
 \ql Adjusted R-squared\cell\qc 0.012\cell\qc 0.023\cell\qc 0.024\cell\qc 0.039\cell\row
 \pard\qc
 Robust standard errors in parentheses\par

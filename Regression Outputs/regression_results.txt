@@ -1,19 +1,19 @@
-		(1)	(2)	(3)	(4)
-VARIABLES	LABELS	Inflation	Inflation	Inflation	Inflation
-					
-cpia_macro_rating	Macro	-269.0	-109.8	-5.862**	-3.222***
-		(255.7)	(108.7)	(2.405)	(0.691)
-cpia_avg_rating	CPIA_Avg		-762.8	-2.072	3.483**
-			(677.3)	(6.294)	(1.737)
-dmstc_crdt_financial	Credit Financial			-0.120**	-0.0773***
-				(0.0473)	(0.0219)
-export_volume	Export				4.56e-06
-					(0.000260)
-Constant	Constant	1,030	2,873	40.01	10.51**
-		(943.6)	(2,530)	(29.17)	(5.149)
-					
-Observations		856	856	825	794
-Number of country		79	79	79	75
-Adjusted R-squared		0.012	0.023	0.024	0.039
-Robust standard errors in parentheses					
-*** p<0.01, ** p<0.05, * p<0.1					
+	(1)	(2)	(3)	(4)
+VARIABLES	inflation	inflation	inflation	inflation
+				
+cpia_macro_rating	-269.0	-109.8	-5.862**	-3.222***
+	(255.7)	(108.7)	(2.405)	(0.691)
+cpia_avg_rating		-762.8	-2.072	3.483**
+		(677.3)	(6.294)	(1.737)
+dmstc_crdt_financial			-0.120**	-0.0773***
+			(0.0473)	(0.0219)
+export_volume				4.56e-06
+				(0.000260)
+Constant	1,030	2,873	40.01	10.51**
+	(943.6)	(2,530)	(29.17)	(5.149)
+				
+Observations	856	856	825	794
+Number of country	79	79	79	75
+Adjusted R-squared	0.012	0.023	0.024	0.039
+Robust standard errors in parentheses				
+*** p<0.01, ** p<0.05, * p<0.1				
