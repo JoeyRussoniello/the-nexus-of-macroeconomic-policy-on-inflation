@@ -1,0 +1,852 @@
+----------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\mruss\projects\classes\ec204\final_project\Do Files\Project Log.log
+  log type:  text
+ opened on:  30 Apr 2025, 17:46:12
+
+. do "C:\Users\mruss\projects\classes\ec204\final_project\Do Files\CompleteDoFile.do"
+
+. //DROP AGGREGATES
+. clear
+
+. cd "C:\Users\mruss\projects\classes\ec204\final_project" //Absolute File Path to my project location
+C:\Users\mruss\projects\classes\ec204\final_project
+
+. 
+. use "data\MasterDataset.dta"
+
+. rename Year Time
+
+. merge 1:1 CountryCode Time using "C:\Users\mruss\Downloads\GDP PPP Panel Data.dta", gen(merge_agg)
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                        10,054
+        from master                       500  (merge_agg==1)
+        from using                      9,554  (merge_agg==2)
+
+    Matched                             4,334  (merge_agg==3)
+    -----------------------------------------
+
+. drop if merge_agg==1
+(500 observations deleted)
+
+. 
+. /* 
+> CLEAN COLUMN NAME and DROP irrelevant columns
+> */
+. 
+. //A bunch of renaming for research
+. rename GDPpercapitagrowthannual gdp_pc_growth
+
+. rename GDPdeflatorbaseyearvariesb gdp_deflator
+
+. rename Domesticcreditprovidedbyfina dmstc_crdt_financial
+
+. rename Domesticcredittoprivatesecto dmstc_crdt_privt
+
+. rename Depthofcreditinformationinde depth_of_credit
+
+. rename Exportvolumeindex2000100 export_volume
+
+. rename GDPpercapitaconstant2015US gdp_constant
+
+. rename Accesstoelectricityofpopu electricity_access
+
+. rename CPIAmacroeconomicmanagementra cpi_macro_rating
+
+. rename cpi_macro_rating cpia_macro_rating
+
+. rename CPIAeconomicmanagementcluster cpi_econ_rating
+
+. rename CPIAfinancialsectorrating1 cpia_financial_rating
+
+. rename Informalpaymentstopublicoffi informal_payments
+
+. rename CountryName country_name
+
+. rename Time year
+
+. rename CountryCode country_code
+
+. rename Inflationconsumerpricesannu inflation
+
+. rename Consumerpriceindex2010100 cpi
+
+. rename Borrowersfromcommercialbanks borrowers
+
+. rename CPIAgenderequalityrating1l cpia_gender_eq_rating
+
+. rename CPIApoliciesforsocialinclusi cpia_social_inclus_rating
+
+. rename CPIApropertyrightsandruleba cpia_prpty_rights_rating
+
+. rename CPIAsocialprotectionrating1 cpia_social_protctn_rating
+
+. rename cpi_econ_rating cpia_econ_rating
+
+. 
+. //Dropping columns not used in final model
+. drop Adolescentfertilityratebirth Agedependencyratioofworki Agriculturevalueaddedannual Agriculturevalueaddedconsta Agriculturevaluead
+> dedofG
+
+. drop Airtransportregisteredcarrie AutomatedtellermachinesATMs Contributingfamilyworkersfem  Contributingfamilyworkersmal  Contributing
+> familyworkerstot
+
+. drop GDPconstant2015USNYGDP  GDPgrowthannual GDPgrowthannualNYGDPMK  GDPpercapitaPPPconstant20 GDPPPPconstant2021internat
+
+. drop ElectricpowerconsumptionkWh
+
+. 
+. //Generate an average rating column 
+. egen cpia_avg_rating = rowmean( cpia_econ_rating cpia_financial_rating  cpia_social_inclus_rating cpia_prpty_rights_rating cpia_social
+> _protctn_rating)
+(12,966 missing values generated)
+
+. 
+. //Drop rows without our main dependent variable
+. drop if missing(cpia_avg_rating)
+(12,966 observations deleted)
+
+. save "data\renamed_rows_final.dta", replace //Save checkpoint
+file data\renamed_rows_final.dta saved
+
+. 
+. /* Regression and table generation do file */
+. clear
+
+. cd "C:\Users\mruss\projects\classes\ec204\final_project" //Absolute File Path to my project
+C:\Users\mruss\projects\classes\ec204\final_project
+
+. use data\renamed_rows_final.dta
+
+. 
+. //Relabel variables for better outreg2 output
+. label variable cpia_macro_rating "Macro"
+
+. label variable inflation "Inflation"
+
+. label variable cpia_avg "CPIA_Avg"
+
+. label variable export_volume "Export"
+
+. label variable dmstc_crdt_financial "Credit Financial"
+
+. 
+. //Generate Helper Columns for Different Models
+. gen macro_rating_sq = cpia_macro_rating * cpia_macro_rating
+
+. label variable macro_rating_sq "Macro^2"
+
+. gen log_macro_rating = log(cpia_macro_rating)
+
+. label variable log_macro_rating "Log(Macro)"
+
+. gen macro_export = cpia_macro_rating * export_volume
+(36 missing values generated)
+
+. label variable macro_export "Macro x Export"
+
+. 
+. //Start Regressions
+. encode country_code, gen(country)
+
+. xtset country year
+
+Panel variable: country (unbalanced)
+ Time variable: year, 2005 to 2016
+         Delta: 1 unit
+
+. 
+. //-----------------Fixed Effects Modeling---------------------
+. 
+. //Basic Linear
+. xtreg inflation cpia_macro_rating,r fe
+
+Fixed-effects (within) regression               Number of obs     =        856
+Group variable: country                         Number of groups  =         79
+
+R-squared:                                      Obs per group:
+     Within  = 0.0133                                         min =          2
+     Between = 0.1226                                         avg =       10.8
+     Overall = 0.0244                                         max =         12
+
+                                                F(1, 78)          =       1.11
+corr(u_i, Xb) = -0.1552                         Prob > F          =     0.2961
+
+                                    (Std. err. adjusted for 79 clusters in country)
+-----------------------------------------------------------------------------------
+                  |               Robust
+        inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+------------------+----------------------------------------------------------------
+cpia_macro_rating |  -268.9703   255.7212    -1.05   0.296    -778.0722    240.1316
+            _cons |   1029.888   943.5696     1.09   0.278     -848.615     2908.39
+------------------+----------------------------------------------------------------
+          sigma_u |  276.75412
+          sigma_e |  821.41764
+              rho |   .1019444   (fraction of variance due to u_i)
+-----------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\no_ovb.doc", replace adjr2
+Regression Outputs\no_ovb.doc
+dir : seeout
+
+. 
+. //Basic Quadratic
+. xtreg inflation cpia_macro_rating macro_rating_sq, r fe
+
+Fixed-effects (within) regression               Number of obs     =        856
+Group variable: country                         Number of groups  =         79
+
+R-squared:                                      Obs per group:
+     Within  = 0.0960                                         min =          2
+     Between = 0.3109                                         avg =       10.8
+     Overall = 0.1220                                         max =         12
+
+                                                F(2, 78)          =       1.13
+corr(u_i, Xb) = -0.2993                         Prob > F          =     0.3293
+
+                                    (Std. err. adjusted for 79 clusters in country)
+-----------------------------------------------------------------------------------
+                  |               Robust
+        inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+------------------+----------------------------------------------------------------
+cpia_macro_rating |   -3683.02   2463.562    -1.49   0.139    -8587.596    1221.556
+  macro_rating_sq |   496.1713   333.1957     1.49   0.140    -167.1704    1159.513
+            _cons |   6670.487   4424.717     1.51   0.136    -2138.448    15479.42
+------------------+----------------------------------------------------------------
+          sigma_u |  286.10937
+          sigma_e |   786.7619
+              rho |  .11679851   (fraction of variance due to u_i)
+-----------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\no_ovb.doc", adjr2
+Regression Outputs\no_ovb.doc
+dir : seeout
+
+. 
+. //Basic Logrithmic
+. xtreg inflation log_macro_rating, r fe
+
+Fixed-effects (within) regression               Number of obs     =        856
+Group variable: country                         Number of groups  =         79
+
+R-squared:                                      Obs per group:
+     Within  = 0.0483                                         min =          2
+     Between = 0.1943                                         avg =       10.8
+     Overall = 0.0573                                         max =         12
+
+                                                F(1, 78)          =       1.45
+corr(u_i, Xb) = -0.4082                         Prob > F          =     0.2330
+
+                                   (Std. err. adjusted for 79 clusters in country)
+----------------------------------------------------------------------------------
+                 |               Robust
+       inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+log_macro_rating |  -1588.442   1321.391    -1.20   0.233    -4219.131    1042.246
+           _cons |   2083.292   1701.908     1.22   0.225    -1304.947    5471.531
+-----------------+----------------------------------------------------------------
+         sigma_u |  305.87243
+         sigma_e |  806.73662
+             rho |  .12568541   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\no_ovb.doc", adjr2
+Regression Outputs\no_ovb.doc
+dir : seeout
+
+. 
+. //-----------Controlling for OVB 
+. //Testing (Note extra variables added as I discovered OVBs)
+. 
+. //No sig change
+. xtreg inflation cpia_macro_rating gdp_pc_growth  , r fe
+
+Fixed-effects (within) regression               Number of obs     =        846
+Group variable: country                         Number of groups  =         79
+
+R-squared:                                      Obs per group:
+     Within  = 0.0161                                         min =          2
+     Between = 0.0948                                         avg =       10.7
+     Overall = 0.0244                                         max =         12
+
+                                                F(2, 78)          =       0.55
+corr(u_i, Xb) = -0.1607                         Prob > F          =     0.5776
+
+                                    (Std. err. adjusted for 79 clusters in country)
+-----------------------------------------------------------------------------------
+                  |               Robust
+        inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+------------------+----------------------------------------------------------------
+cpia_macro_rating |  -246.6385   236.2807    -1.04   0.300    -717.0372    223.7601
+    gdp_pc_growth |  -10.63866   10.27371    -1.04   0.304    -31.09204    9.814713
+            _cons |   978.6392   900.7608     1.09   0.281    -814.6379    2771.916
+------------------+----------------------------------------------------------------
+          sigma_u |  283.85266
+          sigma_e |  826.07081
+              rho |  .10560419   (fraction of variance due to u_i)
+-----------------------------------------------------------------------------------
+
+. xtreg inflation cpia_macro_rating gdp_constant  , r fe
+
+Fixed-effects (within) regression               Number of obs     =        847
+Group variable: country                         Number of groups  =         79
+
+R-squared:                                      Obs per group:
+     Within  = 0.0165                                         min =          2
+     Between = 0.0329                                         avg =       10.7
+     Overall = 0.0070                                         max =         12
+
+                                                F(2, 78)          =       0.56
+corr(u_i, Xb) = -0.7833                         Prob > F          =     0.5734
+
+                                    (Std. err. adjusted for 79 clusters in country)
+-----------------------------------------------------------------------------------
+                  |               Robust
+        inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+------------------+----------------------------------------------------------------
+cpia_macro_rating |  -289.1318   274.2622    -1.05   0.295    -835.1459    256.8824
+     gdp_constant |  -.1885574   .1795109    -1.05   0.297    -.5459361    .1688214
+            _cons |    1492.73   1375.855     1.08   0.281    -1246.387    4231.848
+------------------+----------------------------------------------------------------
+          sigma_u |  465.30978
+          sigma_e |  825.36144
+              rho |  .24117725   (fraction of variance due to u_i)
+-----------------------------------------------------------------------------------
+
+. //Sig Change (But 1/3 of the number of observatiosn)
+. xtreg inflation cpia_macro_rating  dmstc_crdt_financial export_volume  depth_of_credit , r fe
+
+Fixed-effects (within) regression               Number of obs     =        236
+Group variable: country                         Number of groups  =         67
+
+R-squared:                                      Obs per group:
+     Within  = 0.0528                                         min =          1
+     Between = 0.0593                                         avg =        3.5
+     Overall = 0.0686                                         max =          4
+
+                                                F(4, 66)          =      53.95
+corr(u_i, Xb) = -0.1060                         Prob > F          =     0.0000
+
+                                       (Std. err. adjusted for 67 clusters in country)
+--------------------------------------------------------------------------------------
+                     |               Robust
+           inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+---------------------+----------------------------------------------------------------
+   cpia_macro_rating |  -2.513298   .7590657    -3.31   0.002    -4.028822   -.9977748
+dmstc_crdt_financial |   -.042311   .0464855    -0.91   0.366    -.1351224    .0505003
+       export_volume |  -.0007883    .000078   -10.11   0.000     -.000944   -.0006326
+     depth_of_credit |  -.0329043   .0868642    -0.38   0.706    -.2063342    .1405256
+               _cons |   15.85615   3.716572     4.27   0.000     8.435776    23.27653
+---------------------+----------------------------------------------------------------
+             sigma_u |  4.6414735
+             sigma_e |  2.8955744
+                 rho |  .71984578   (fraction of variance due to u_i)
+--------------------------------------------------------------------------------------
+
+. //No sig change
+. xtreg inflation cpia_macro_rating  dmstc_crdt_financial export_volume  depth_of_credit electricity_access, r fe
+
+Fixed-effects (within) regression               Number of obs     =        236
+Group variable: country                         Number of groups  =         67
+
+R-squared:                                      Obs per group:
+     Within  = 0.0531                                         min =          1
+     Between = 0.0801                                         avg =        3.5
+     Overall = 0.0892                                         max =          4
+
+                                                F(5, 66)          =      44.65
+corr(u_i, Xb) = -0.0944                         Prob > F          =     0.0000
+
+                                       (Std. err. adjusted for 67 clusters in country)
+--------------------------------------------------------------------------------------
+                     |               Robust
+           inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+---------------------+----------------------------------------------------------------
+   cpia_macro_rating |  -2.497134   .7690168    -3.25   0.002    -4.032525    -.961742
+dmstc_crdt_financial |  -.0407185    .047876    -0.85   0.398    -.1363059    .0548689
+       export_volume |  -.0007954   .0000775   -10.27   0.000    -.0009501   -.0006408
+     depth_of_credit |  -.0193923   .0938978    -0.21   0.837    -.2068653    .1680807
+  electricity_access |  -.0151012   .0393467    -0.38   0.702    -.0936594    .0634571
+               _cons |   16.57909   3.629212     4.57   0.000     9.333138    23.82505
+---------------------+----------------------------------------------------------------
+             sigma_u |  4.5880867
+             sigma_e |  2.9039034
+                 rho |  .71398436   (fraction of variance due to u_i)
+--------------------------------------------------------------------------------------
+
+. //Not enough observations to make conclusions
+. xtreg inflation cpia_macro_rating  dmstc_crdt_financial export_volume  depth_of_credit informal_payments , r fe
+note: cpia_macro_rating omitted because of collinearity.
+note: depth_of_credit omitted because of collinearity.
+note: informal_payments omitted because of collinearity.
+
+Fixed-effects (within) regression               Number of obs     =         41
+Group variable: country                         Number of groups  =         39
+
+R-squared:                                      Obs per group:
+     Within  = 1.0000                                         min =          1
+     Between = 0.0070                                         avg =        1.1
+     Overall = 0.0073                                         max =          2
+
+                                                F(0, 38)          =          .
+corr(u_i, Xb) = -1.0000                         Prob > F          =          .
+
+                                       (Std. err. adjusted for 39 clusters in country)
+--------------------------------------------------------------------------------------
+                     |               Robust
+           inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+---------------------+----------------------------------------------------------------
+   cpia_macro_rating |          0  (omitted)
+dmstc_crdt_financial |   31.39444          .        .       .            .           .
+       export_volume |  -3.339872          .        .       .            .           .
+     depth_of_credit |          0  (omitted)
+   informal_payments |          0  (omitted)
+               _cons |  -320.2427          .        .       .            .           .
+---------------------+----------------------------------------------------------------
+             sigma_u |  648.11713
+             sigma_e |          .
+                 rho |          .   (fraction of variance due to u_i)
+--------------------------------------------------------------------------------------
+
+. 
+. 
+. //Controlling for OVB in outreg2
+. xtreg inflation cpia_macro_rating, r fe
+
+Fixed-effects (within) regression               Number of obs     =        856
+Group variable: country                         Number of groups  =         79
+
+R-squared:                                      Obs per group:
+     Within  = 0.0133                                         min =          2
+     Between = 0.1226                                         avg =       10.8
+     Overall = 0.0244                                         max =         12
+
+                                                F(1, 78)          =       1.11
+corr(u_i, Xb) = -0.1552                         Prob > F          =     0.2961
+
+                                    (Std. err. adjusted for 79 clusters in country)
+-----------------------------------------------------------------------------------
+                  |               Robust
+        inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+------------------+----------------------------------------------------------------
+cpia_macro_rating |  -268.9703   255.7212    -1.05   0.296    -778.0722    240.1316
+            _cons |   1029.888   943.5696     1.09   0.278     -848.615     2908.39
+------------------+----------------------------------------------------------------
+          sigma_u |  276.75412
+          sigma_e |  821.41764
+              rho |   .1019444   (fraction of variance due to u_i)
+-----------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\regression_results.doc", replace adjr2
+Regression Outputs\regression_results.doc
+dir : seeout
+
+. 
+. xtreg inflation cpia_macro_rating cpia_avg_rating, r fe
+
+Fixed-effects (within) regression               Number of obs     =        856
+Group variable: country                         Number of groups  =         79
+
+R-squared:                                      Obs per group:
+     Within  = 0.0251                                         min =          2
+     Between = 0.1020                                         avg =       10.8
+     Overall = 0.0212                                         max =         12
+
+                                                F(2, 78)          =       0.64
+corr(u_i, Xb) = -0.7163                         Prob > F          =     0.5325
+
+                                    (Std. err. adjusted for 79 clusters in country)
+-----------------------------------------------------------------------------------
+                  |               Robust
+        inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+------------------+----------------------------------------------------------------
+cpia_macro_rating |  -109.8463   108.7187    -1.01   0.315    -326.2886    106.5961
+  cpia_avg_rating |  -762.8264   677.2846    -1.13   0.263    -2111.196    585.5436
+            _cons |   2873.106   2529.662     1.14   0.260    -2163.065    7909.277
+------------------+----------------------------------------------------------------
+          sigma_u |   417.9532
+          sigma_e |  817.03966
+              rho |  .20740543   (fraction of variance due to u_i)
+-----------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\regression_results.doc", adjr2
+Regression Outputs\regression_results.doc
+dir : seeout
+
+. 
+. xtreg inflation cpia_macro_rating cpia_avg_rating dmstc_crdt_financial, r fe
+
+Fixed-effects (within) regression               Number of obs     =        825
+Group variable: country                         Number of groups  =         79
+
+R-squared:                                      Obs per group:
+     Within  = 0.0277                                         min =          1
+     Between = 0.1945                                         avg =       10.4
+     Overall = 0.0620                                         max =         12
+
+                                                F(3, 78)          =       5.34
+corr(u_i, Xb) = -0.0846                         Prob > F          =     0.0021
+
+                                       (Std. err. adjusted for 79 clusters in country)
+--------------------------------------------------------------------------------------
+                     |               Robust
+           inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+---------------------+----------------------------------------------------------------
+   cpia_macro_rating |  -5.861735    2.40506    -2.44   0.017    -10.64984   -1.073629
+     cpia_avg_rating |  -2.072391   6.293502    -0.33   0.743    -14.60179    10.45701
+dmstc_crdt_financial |  -.1196087    .047293    -2.53   0.013    -.2137619   -.0254556
+               _cons |   40.00865    29.1727     1.37   0.174    -18.06974    98.08704
+---------------------+----------------------------------------------------------------
+             sigma_u |  32.729487
+             sigma_e |  12.663158
+                 rho |  .86979634   (fraction of variance due to u_i)
+--------------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\regression_results.doc", adjr2
+Regression Outputs\regression_results.doc
+dir : seeout
+
+. 
+. xtreg inflation cpia_macro_rating cpia_avg_rating dmstc_crdt_financial export_volume, r fe
+
+Fixed-effects (within) regression               Number of obs     =        794
+Group variable: country                         Number of groups  =         75
+
+R-squared:                                      Obs per group:
+     Within  = 0.0434                                         min =          1
+     Between = 0.0190                                         avg =       10.6
+     Overall = 0.0204                                         max =         12
+
+                                                F(4, 74)          =       6.45
+corr(u_i, Xb) = -0.0202                         Prob > F          =     0.0002
+
+                                       (Std. err. adjusted for 75 clusters in country)
+--------------------------------------------------------------------------------------
+                     |               Robust
+           inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+---------------------+----------------------------------------------------------------
+   cpia_macro_rating |  -3.222098   .6908042    -4.66   0.000    -4.598555   -1.845641
+     cpia_avg_rating |   3.482559   1.737091     2.00   0.049     .0213291    6.943789
+dmstc_crdt_financial |  -.0773069   .0219425    -3.52   0.001    -.1210282   -.0335856
+       export_volume |   4.56e-06   .0002595     0.02   0.986    -.0005125    .0005216
+               _cons |   10.50989   5.148917     2.04   0.045      .250444    20.76933
+---------------------+----------------------------------------------------------------
+             sigma_u |  34.130207
+             sigma_e |  4.8305598
+                 rho |  .98036172   (fraction of variance due to u_i)
+--------------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\regression_results.doc", adjr2
+Regression Outputs\regression_results.doc
+dir : seeout
+
+. //---------Joint F-Test
+. 
+. //---------Interaction Term Testing----------------------
+. xtreg inflation c.cpia_macro_rating##c.cpia_avg_rating dmstc_crdt_financial export_volume, r fe
+
+Fixed-effects (within) regression               Number of obs     =        794
+Group variable: country                         Number of groups  =         75
+
+R-squared:                                      Obs per group:
+     Within  = 0.0445                                         min =          1
+     Between = 0.1543                                         avg =       10.6
+     Overall = 0.0413                                         max =         12
+
+                                                F(5, 74)          =       5.13
+corr(u_i, Xb) = 0.0488                          Prob > F          =     0.0004
+
+                                                        (Std. err. adjusted for 75 clusters in country)
+-------------------------------------------------------------------------------------------------------
+                                      |               Robust
+                            inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+--------------------------------------+----------------------------------------------------------------
+                    cpia_macro_rating |  -6.331377   4.449143    -1.42   0.159    -15.19649    2.533734
+                      cpia_avg_rating |  -.1910426   5.180572    -0.04   0.971    -10.51356    10.13147
+                                      |
+c.cpia_macro_rating#c.cpia_avg_rating |   .9889789   1.343932     0.74   0.464    -1.688865    3.666823
+                                      |
+                 dmstc_crdt_financial |  -.0737614   .0236515    -3.12   0.003    -.1208881   -.0266348
+                        export_volume |   3.00e-06   .0002543     0.01   0.991    -.0005036    .0005096
+                                _cons |   21.78123    16.2765     1.34   0.185     -10.6504    54.21286
+--------------------------------------+----------------------------------------------------------------
+                              sigma_u |  33.667612
+                              sigma_e |   4.831215
+                                  rho |  .97982395   (fraction of variance due to u_i)
+-------------------------------------------------------------------------------------------------------
+
+. xtreg inflation c.cpia_macro_rating##c.dmstc_crdt_financial c.cpia_avg_rating export_volume, r fe
+
+Fixed-effects (within) regression               Number of obs     =        794
+Group variable: country                         Number of groups  =         75
+
+R-squared:                                      Obs per group:
+     Within  = 0.0435                                         min =          1
+     Between = 0.0237                                         avg =       10.6
+     Overall = 0.0214                                         max =         12
+
+                                                F(5, 74)          =       5.41
+corr(u_i, Xb) = -0.0180                         Prob > F          =     0.0003
+
+                                                             (Std. err. adjusted for 75 clusters in country)
+------------------------------------------------------------------------------------------------------------
+                                           |               Robust
+                                 inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-------------------------------------------+----------------------------------------------------------------
+                         cpia_macro_rating |  -3.065076   1.155936    -2.65   0.010    -5.368329   -.7618222
+                      dmstc_crdt_financial |  -.0608299   .0861501    -0.71   0.482    -.2324877    .1108279
+                                           |
+c.cpia_macro_rating#c.dmstc_crdt_financial |  -.0045097    .022664    -0.20   0.843    -.0496687    .0406494
+                                           |
+                           cpia_avg_rating |    3.46897   1.755007     1.98   0.052    -.0279582    6.965897
+                             export_volume |   4.60e-06   .0002599     0.02   0.986    -.0005133    .0005225
+                                     _cons |   9.981198    5.44502     1.83   0.071    -.8682415    20.83064
+-------------------------------------------+----------------------------------------------------------------
+                                   sigma_u |  34.099897
+                                   sigma_e |  4.8337924
+                                       rho |  .98030166   (fraction of variance due to u_i)
+------------------------------------------------------------------------------------------------------------
+
+. 
+. //FINAL RESULTS: EXTREMELY INTERESTING
+. 
+. //Basic Linear Model
+. xtreg inflation cpia_macro_rating, r fe
+
+Fixed-effects (within) regression               Number of obs     =        856
+Group variable: country                         Number of groups  =         79
+
+R-squared:                                      Obs per group:
+     Within  = 0.0133                                         min =          2
+     Between = 0.1226                                         avg =       10.8
+     Overall = 0.0244                                         max =         12
+
+                                                F(1, 78)          =       1.11
+corr(u_i, Xb) = -0.1552                         Prob > F          =     0.2961
+
+                                    (Std. err. adjusted for 79 clusters in country)
+-----------------------------------------------------------------------------------
+                  |               Robust
+        inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+------------------+----------------------------------------------------------------
+cpia_macro_rating |  -268.9703   255.7212    -1.05   0.296    -778.0722    240.1316
+            _cons |   1029.888   943.5696     1.09   0.278     -848.615     2908.39
+------------------+----------------------------------------------------------------
+          sigma_u |  276.75412
+          sigma_e |  821.41764
+              rho |   .1019444   (fraction of variance due to u_i)
+-----------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\final_results.doc", replace adjr2 label
+Regression Outputs\final_results.doc
+dir : seeout
+
+. 
+. //Linear Model for Comparison (Adj R^2)
+. xtreg inflation cpia_macro_rating export_volume cpia_avg_rating dmstc_crdt_financial, r fe
+
+Fixed-effects (within) regression               Number of obs     =        794
+Group variable: country                         Number of groups  =         75
+
+R-squared:                                      Obs per group:
+     Within  = 0.0434                                         min =          1
+     Between = 0.0190                                         avg =       10.6
+     Overall = 0.0204                                         max =         12
+
+                                                F(4, 74)          =       6.45
+corr(u_i, Xb) = -0.0202                         Prob > F          =     0.0002
+
+                                       (Std. err. adjusted for 75 clusters in country)
+--------------------------------------------------------------------------------------
+                     |               Robust
+           inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+---------------------+----------------------------------------------------------------
+   cpia_macro_rating |  -3.222098   .6908042    -4.66   0.000    -4.598555   -1.845641
+       export_volume |   4.56e-06   .0002595     0.02   0.986    -.0005125    .0005216
+     cpia_avg_rating |   3.482559   1.737091     2.00   0.049     .0213291    6.943789
+dmstc_crdt_financial |  -.0773069   .0219425    -3.52   0.001    -.1210282   -.0335856
+               _cons |   10.50989   5.148917     2.04   0.045      .250444    20.76933
+---------------------+----------------------------------------------------------------
+             sigma_u |  34.130207
+             sigma_e |  4.8305598
+                 rho |  .98036172   (fraction of variance due to u_i)
+--------------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\final_results.doc", adjr2 label
+Regression Outputs\final_results.doc
+dir : seeout
+
+. 
+. //Squared Model
+. xtreg inflation cpia_macro_rating macro_rating_sq export_volume cpia_avg_rating dmstc_crdt_financial, r fe
+
+Fixed-effects (within) regression               Number of obs     =        794
+Group variable: country                         Number of groups  =         75
+
+R-squared:                                      Obs per group:
+     Within  = 0.0483                                         min =          1
+     Between = 0.2705                                         avg =       10.6
+     Overall = 0.0598                                         max =         12
+
+                                                F(5, 74)          =       5.34
+corr(u_i, Xb) = 0.0966                          Prob > F          =     0.0003
+
+                                       (Std. err. adjusted for 75 clusters in country)
+--------------------------------------------------------------------------------------
+                     |               Robust
+           inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+---------------------+----------------------------------------------------------------
+   cpia_macro_rating |  -10.14042   4.105887    -2.47   0.016    -18.32158   -1.959265
+     macro_rating_sq |    .970155   .5342109     1.82   0.073    -.0942835    2.034594
+       export_volume |   .0000129   .0002532     0.05   0.960    -.0004916    .0005173
+     cpia_avg_rating |   3.427669   1.718734     1.99   0.050     .0030171    6.852322
+dmstc_crdt_financial |  -.0688147   .0221655    -3.10   0.003    -.1129804   -.0246489
+               _cons |   22.36233   8.049265     2.78   0.007     6.323821    38.40084
+---------------------+----------------------------------------------------------------
+             sigma_u |  33.409148
+             sigma_e |  4.8214284
+                 rho |  .97959819   (fraction of variance due to u_i)
+--------------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\final_results.doc", adjr2 label
+Regression Outputs\final_results.doc
+dir : seeout
+
+. 
+. //Log Model 
+. xtreg inflation cpia_macro_rating log_macro_rating export_volume cpia_avg_rating dmstc_crdt_financial, r fe
+
+Fixed-effects (within) regression               Number of obs     =        794
+Group variable: country                         Number of groups  =         75
+
+R-squared:                                      Obs per group:
+     Within  = 0.0488                                         min =          1
+     Between = 0.5517                                         avg =       10.6
+     Overall = 0.1159                                         max =         12
+
+                                                F(5, 74)          =       5.30
+corr(u_i, Xb) = 0.2033                          Prob > F          =     0.0003
+
+                                       (Std. err. adjusted for 75 clusters in country)
+--------------------------------------------------------------------------------------
+                     |               Robust
+           inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+---------------------+----------------------------------------------------------------
+   cpia_macro_rating |   3.869446    3.37497     1.15   0.255    -2.855328    10.59422
+    log_macro_rating |  -24.43571   12.40214    -1.97   0.053    -49.14751     .276082
+       export_volume |   .0000156   .0002527     0.06   0.951    -.0004879    .0005192
+     cpia_avg_rating |   3.333484   1.700282     1.96   0.054     -.054401    6.721369
+dmstc_crdt_financial |  -.0690563   .0219113    -3.15   0.002    -.1127155   -.0253972
+               _cons |   16.08094   5.673963     2.83   0.006     4.775318    27.38655
+---------------------+----------------------------------------------------------------
+             sigma_u |  32.653616
+             sigma_e |  4.8203531
+                 rho |  .97867286   (fraction of variance due to u_i)
+--------------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\final_results.doc", adjr2 label
+Regression Outputs\final_results.doc
+dir : seeout
+
+. 
+. //ONLY WHEN holding other variables constant
+. xtreg inflation cpia_macro_rating export_volume macro_export, r fe
+
+Fixed-effects (within) regression               Number of obs     =        825
+Group variable: country                         Number of groups  =         75
+
+R-squared:                                      Obs per group:
+     Within  = 0.0254                                         min =          2
+     Between = 0.2398                                         avg =       11.0
+     Overall = 0.0454                                         max =         12
+
+                                                F(3, 74)          =       0.39
+corr(u_i, Xb) = -0.2344                         Prob > F          =     0.7599
+
+                                    (Std. err. adjusted for 75 clusters in country)
+-----------------------------------------------------------------------------------
+                  |               Robust
+        inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+------------------+----------------------------------------------------------------
+cpia_macro_rating |  -608.8896   564.5426    -1.08   0.284    -1733.765    515.9862
+    export_volume |  -6.812498   6.438144    -1.06   0.293    -19.64078    6.015784
+     macro_export |   1.703104     1.6096     1.06   0.293    -1.504094    4.910302
+            _cons |    2376.45   2168.925     1.10   0.277    -1945.227    6698.127
+------------------+----------------------------------------------------------------
+          sigma_u |  267.31302
+          sigma_e |  831.98776
+              rho |  .09357078   (fraction of variance due to u_i)
+-----------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\final_results.doc", adjr2 label
+Regression Outputs\final_results.doc
+dir : seeout
+
+. 
+. //Interaction Term
+. xtreg inflation cpia_macro_rating export_volume macro_export cpia_avg_rating dmstc_crdt_financial, r fe
+
+Fixed-effects (within) regression               Number of obs     =        794
+Group variable: country                         Number of groups  =         75
+
+R-squared:                                      Obs per group:
+     Within  = 0.0497                                         min =          1
+     Between = 0.1008                                         avg =       10.6
+     Overall = 0.0384                                         max =         12
+
+                                                F(5, 74)          =       5.87
+corr(u_i, Xb) = 0.0348                          Prob > F          =     0.0001
+
+                                       (Std. err. adjusted for 75 clusters in country)
+--------------------------------------------------------------------------------------
+                     |               Robust
+           inflation | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+---------------------+----------------------------------------------------------------
+   cpia_macro_rating |  -4.644347   1.103913    -4.21   0.000    -6.843941   -2.444753
+       export_volume |   -.031677   .0162792    -1.95   0.055    -.0641139      .00076
+        macro_export |   .0079244    .004068     1.95   0.055    -.0001813    .0160301
+     cpia_avg_rating |   3.284337   1.776323     1.85   0.068    -.2550644    6.823738
+dmstc_crdt_financial |  -.0741263   .0214716    -3.45   0.001    -.1169094   -.0313431
+               _cons |    16.6745    6.45051     2.58   0.012     3.821575    29.52742
+---------------------+----------------------------------------------------------------
+             sigma_u |   33.80129
+             sigma_e |  4.8180968
+                 rho |  .98008644   (fraction of variance due to u_i)
+--------------------------------------------------------------------------------------
+
+. outreg2 using "Regression Outputs\final_results.doc", adjr2 label
+Regression Outputs\final_results.doc
+dir : seeout
+
+. 
+. 
+. ///Scatterplot codex`'
+> 
+. * Create a new boolean variable for outliers
+. gen extreme_inflation = inflation > 200
+
+. 
+. * Label the new variable for clarity
+. label variable extreme_inflation "Inflation > 200%"
+
+.  
+.  
+. //Create the scatter plot of the results
+. twoway (scatter inflation cpia_macro_rating, sort mcolor(ltblue) msize(3-pt)) if extreme_inflation == 0, ytitle("% Change in Inflation
+> ") ymtick(minmax) xtitle("CPIA Macroeconomic Management Rating (1 = Bad, 6 = Great)") title("Macroeconomic Management Quality v Inflat
+> ion % by Year", span) note("World Bank Data 2005-2016", margin(esubhead))
+
+. graph export "C:\Users\mruss\projects\classes\ec204\final_project\Scatter.png", as(png) name("Graph")
+
+end of do-file
+
+r(602);
+
+. log close
+      name:  <unnamed>
+       log:  C:\Users\mruss\projects\classes\ec204\final_project\Do Files\Project Log.log
+  log type:  text
+ closed on:  30 Apr 2025, 17:46:34
+----------------------------------------------------------------------------------------------------------------------------------------

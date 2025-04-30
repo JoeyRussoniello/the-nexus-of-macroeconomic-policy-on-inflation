@@ -1,25 +1,25 @@
-		(1)	(2)	(3)	(4)	(5)
-VARIABLES	LABELS	Inflation	Inflation	Inflation	Inflation	Inflation
-						
-cpia_macro_rating	Macro	-3.222***			-608.9	-4.644***
-		(0.691)			(564.5)	(1.104)
-export_volume	Export	4.56e-06	1.02e-05	6.18e-06	-6.812	-0.0317*
-		(0.000260)	(0.000263)	(0.000256)	(6.438)	(0.0163)
-cpia_avg_rating	CPIA_Avg	3.483**	3.119*	3.565**		3.284*
-		(1.737)	(1.710)	(1.742)		(1.776)
-dmstc_crdt_financial	Credit Financial	-0.0773***	-0.0784***	-0.0744***		-0.0741***
-		(0.0219)	(0.0223)	(0.0214)		(0.0215)
-macro_rating_sq	Macro^2		-0.408***			
-			(0.0890)			
-log_macro_rating	Log(Macro)			-11.53***		
-				(2.462)		
-macro_export	Macro x Export				1.703	0.00792*
-					(1.610)	(0.00407)
-Constant	Constant	10.51**	5.516	13.14**	2,376	16.67**
-		(5.149)	(5.217)	(5.174)	(2,169)	(6.451)
-						
-Observations		794	794	794	825	794
-Number of country		75	75	75	75	75
-Adjusted R-squared		0.039	0.033	0.042	0.022	0.044
-Robust standard errors in parentheses						
-*** p<0.01, ** p<0.05, * p<0.1						
+		(1)	(2)	(3)	(4)	(5)	(6)
+VARIABLES	LABELS	Inflation	Inflation	Inflation	Inflation	Inflation	Inflation
+							
+cpia_macro_rating	Macro	-269.0	-3.222***	-10.14**	3.869	-608.9	-4.644***
+		(255.7)	(0.691)	(4.106)	(3.375)	(564.5)	(1.104)
+macro_rating_sq	Macro^2			0.970*			
+				(0.534)			
+export_volume	Export		4.56e-06	1.29e-05	1.56e-05	-6.812	-0.0317*
+			(0.000260)	(0.000253)	(0.000253)	(6.438)	(0.0163)
+cpia_avg_rating	CPIA_Avg		3.483**	3.428**	3.333*		3.284*
+			(1.737)	(1.719)	(1.700)		(1.776)
+dmstc_crdt_financial	Credit Financial		-0.0773***	-0.0688***	-0.0691***		-0.0741***
+			(0.0219)	(0.0222)	(0.0219)		(0.0215)
+log_macro_rating	Log(Macro)				-24.44*		
+					(12.40)		
+macro_export	Macro x Export					1.703	0.00792*
+						(1.610)	(0.00407)
+Constant	Constant	1,030	10.51**	22.36***	16.08***	2,376	16.67**
+		(943.6)	(5.149)	(8.049)	(5.674)	(2,169)	(6.451)
+							
+Observations		856	794	794	794	825	794
+Number of country		79	75	75	75	75	75
+Adjusted R-squared		0.012	0.039	0.042	0.043	0.022	0.044
+Robust standard errors in parentheses							
+*** p<0.01, ** p<0.05, * p<0.1							
